@@ -1,0 +1,40 @@
+cff-version: 1.2.0
+message: "If you use this code or data, please cite it as below."
+title: "verifier-instruments: instruments and pre-registered designs of the verifier lab"
+authors:
+  - family-names: Moon
+    given-names: Bentley
+    orcid: "https://orcid.org/0009-0003-0053-1661"
+    website: "https://bentleymoon.com"
+type: software
+license: MIT
+version: 0.1.0
+date-released: "2026-09-23"
+keywords:
+  - AI safety
+  - prompt injection
+  - LLM evaluation
+  - oversight
+  - pre-registration
+abstract: >
+  The grading code, ledger audits and pre-registered experiment designs of a research
+  programme that tests where one language model checking another one's work breaks down.
+  Tasks carry exact integer answers (arithmetic, table lookup, code tracing, fixed facts),
+  so outputs are graded against the answer rather than by a judge model; runs used local
+  open-weight models on one GPU. Contains 28 Python modules; 75 designs
+  (the 73 pre-registered ones, one corrected re-run and one template) with the
+  latest graded result of each that has one (70 rows, 214 cells; per-item
+  values kept, raw model text removed); the retraction ledger (28 records);
+  and the re-serve supersessions. reproduce.py
+  recomputes 178 stored verdicts from their per-item values, runs a planted-defect
+  canary against nine ledger audits, and runs the instrument controls, offline with numpy
+  as the only dependency.
+references:
+  - type: dataset
+    title: "Detection is not resistance: frontier prompt-injection receipts"
+    authors:
+      - family-names: Moon
+        given-names: Bentley
+        orcid: "https://orcid.org/0009-0003-0053-1661"
+    doi: 10.5281/zenodo.22805797
+    url: "https://github.com/BentleyMoon/frontier-repro"

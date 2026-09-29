@@ -1,0 +1,697 @@
+{
+  "name": "verifier-instruments",
+  "version": "0.1.0",
+  "engine_commit": "388ed072c2e4142a49ce3e3ddb1d190e6ee43537",
+  "engine_commit_note": "every module is read from this commit (git show), never from the engine's working tree; engine_working_tree_had_uncommitted_changes says only that the working copy differed, not how. The data files are live ledgers read at export time. source_sha256 is the committed file after CRLF->LF normalisation, before any scrub.",
+  "generator": "projects/verifier_frontier/export_instruments.py (in the engine repository; not shipped)",
+  "line_endings": "LF. The engine's Windows working copy uses CRLF (core.autocrlf); the export normalises CRLF to LF and .gitattributes keeps LF on checkout.",
+  "verified_with": {
+    "python": "3.14.3",
+    "numpy": "2.4.2"
+  },
+  "modules": [
+    "rigor.py",
+    "meta_lab.py",
+    "causal_faithfulness.py",
+    "debate_truth.py",
+    "fidelity_tasks.py",
+    "soup_triplets.py",
+    "spec_decay.py",
+    "fingerprint.py",
+    "trust.py",
+    "retractions.py",
+    "findings_lint.py",
+    "quoted_numbers.py",
+    "leak_exposure.py",
+    "derived_check.py",
+    "band_agreement.py",
+    "sibling_agreement.py",
+    "parse_capture_audit.py",
+    "runner_reads_audit.py",
+    "substrate_label_audit.py",
+    "floored_audit.py",
+    "corpus_audit.py",
+    "unanswered_audit.py",
+    "instrument_check.py",
+    "defence_score.py",
+    "verdict_lint.py",
+    "lattice_canary.py",
+    "controls.py",
+    "procedure_applicability.py"
+  ],
+  "modules_added_by_import_closure": [
+    {
+      "module": "procedure_applicability.py",
+      "imported_by": "meta_lab.py",
+      "why": "imported at module level by meta_lab.py, so the export cannot import without it; added by the generator's import-closure check"
+    }
+  ],
+  "excluded_modules": {
+    "backend": "the model client (HTTP to the local model server); leaving it out makes any runner call fail with ImportError",
+    "gpu_priority": "scans host TCP connections for peers on the model-server port; creates a state directory at import",
+    "launch_when_quiet": "loads Windows DLLs at import; launches the model server and the daemon",
+    "broker_lease": "opens a socket to the GPU lease broker and imports gpu_priority",
+    "winscan": "Windows console-window hygiene for the operator's desktop",
+    "solvency": "queue operations (whether proposals stop being executed)",
+    "decisions": "operator decision governance",
+    "meta_lab_daemon": "the run daemon; network calls and an import-time side effect",
+    "queue_control": "queue operations; network and subprocess; a local default path",
+    "watchdog": "process supervision; socket, network and subprocess",
+    "preflight": "imports backend and the engine test suite",
+    "frontier_* and adjudicator_check": "read an API key from the environment and call a hosted model"
+  },
+  "operational_controls_skipped_by_reproduce": {
+    "winscan": "certifies Windows console hygiene on the operator's desktop; winscan.py is not shipped",
+    "broker_lease.on_wait": "certifies the GPU lease; broker_lease.py (socket to the lease broker, imports gpu_priority) is not shipped",
+    "solvency": "certifies the run queue; solvency.py is not shipped",
+    "decisions.open": "certifies operator decision governance; decisions.py is not shipped",
+    "launch_when_quiet.gate_windows": "certifies the engine start-up gate; launch_when_quiet.py (Windows DLLs at import, launches the model server) is not shipped"
+  },
+  "modifications": [
+    {
+      "file": "lab/meta_lab.py",
+      "line": 2578,
+      "reason": "local absolute path in a docstring (run_boundary_control); replaced with a placeholder. Changes meta_lab.py's hash, so it does not match the verified_at fingerprints stored in result rows",
+      "before": "a local absolute Windows path (drive letter, colon, escaped backslash) ending in deepresearch",
+      "after": "<local path>/deepresearch"
+    },
+    {
+      "file": "lab/meta_lab.py",
+      "line": 4864,
+      "reason": "an error message naming the external assistant behind the hand-off button; now names the button only",
+      "before": "the hand-off button's label",
+      "after": "use 'Hand off' to have a bespoke"
+    },
+    {
+      "file": "lab/meta_lab.py",
+      "line": 4909,
+      "reason": "a section comment naming the external assistant; now neutral",
+      "before": "the hand-off section comment",
+      "after": "# ---- hand-off (the escape hatch"
+    },
+    {
+      "file": "lab/meta_lab.py",
+      "line": 6542,
+      "reason": "a comment naming the lab's internal instruction file, which does not ship",
+      "before": "an internal file name in a comment",
+      "after": "shape as the lab notes' recorded test count:"
+    },
+    {
+      "file": "lab/verdict_lint.py",
+      "line": 55,
+      "reason": "DEFAULT_DOCS named internal documents that do not ship; it now scans the repository README, the one piece of public prose in this export",
+      "before": "a six-entry DEFAULT_DOCS list: FINDINGS.json and five internal drafts and handoff notes, none of which ship",
+      "after": "DEFAULT_DOCS = [os.path.join(os.pardir, \"README.md\")]   # verifier-instruments: the public prose that ships"
+    }
+  ],
+  "designs": {
+    "count": 75,
+    "preregistered": {
+      "count": 73,
+      "tiers": [
+        "CONFIRMATORY_LOCAL",
+        "EXTERNAL_READY"
+      ],
+      "ids": [
+        "bld_c32_code",
+        "bld_c32_lookup",
+        "bld_r1_code",
+        "bld_r1_lookup",
+        "cnf_invcross_qwen35",
+        "cnf_kdg_gemma",
+        "cnf_labeldef_qwen35",
+        "conf_dissoc_gemma_labelled",
+        "conf_dissoc_gemma_plain",
+        "conf_dissoc_qwen35_labelled",
+        "conf_dissoc_qwen35_plain",
+        "conf_family_gemma12",
+        "conf_family_qwen35",
+        "conf_obey_gemma",
+        "conf_obey_qwen35",
+        "conf_recon_gemma",
+        "conf_recon_qwen35",
+        "conf_scale_gemma_large",
+        "conf_scale_gemma_small",
+        "conf_scale_qwen25c_large",
+        "conf_scale_qwen25c_small",
+        "cvt_g12_code",
+        "cvt_g12_code_rs",
+        "cvt_g12_lookup",
+        "cvt_g12_lookup_rs",
+        "cvt_g12_s1",
+        "cvt_g12_s1_rs",
+        "cvt_g12_s2",
+        "cvt_g12_s2_rs",
+        "cvt_g12_s3",
+        "cvt_g12_s3_rs",
+        "cvt_g31_code",
+        "cvt_g31_lookup",
+        "cvt_g31_lookup_s2",
+        "cvt_g31_lookup_s3",
+        "cvt_g31_s1",
+        "cvt_g31_s2",
+        "cvt_g31_s3",
+        "dec_c30",
+        "dec_c32",
+        "dec_dol",
+        "dec_hm3",
+        "dec_moe",
+        "dec_q35",
+        "dec_r1",
+        "ext_invcross",
+        "ext_kdg_open",
+        "ext_labeldef",
+        "fx_c14_code",
+        "fx_dsk_code",
+        "fx_g31_code",
+        "fx_moe_code",
+        "intv_g31_code",
+        "intv_g31_fact",
+        "intv_g31_lookup",
+        "intv_moe_code",
+        "intv_moe_fact",
+        "intv_moe_lookup",
+        "inv_bign",
+        "inv_fact",
+        "inv_seed1",
+        "inv_seed2",
+        "inv_seed3",
+        "inv_sib32",
+        "ps25_p03_q35_provenance_recovery_c2",
+        "sbt2_moe_code",
+        "sbt2_moe_lookup",
+        "sbt2_q35_code",
+        "sbt2_q35_lookup",
+        "sbt_moe_code",
+        "sbt_moe_lookup",
+        "sbt_q35_code",
+        "sbt_q35_lookup"
+      ],
+      "without_result": [
+        {
+          "design_id": "bld_r1_code",
+          "why": "queue status cancelled"
+        },
+        {
+          "design_id": "ext_invcross",
+          "why": "an EXTERNAL_READY recipe, never run locally"
+        },
+        {
+          "design_id": "ext_kdg_open",
+          "why": "an EXTERNAL_READY recipe, never run locally"
+        },
+        {
+          "design_id": "ext_labeldef",
+          "why": "an EXTERNAL_READY recipe, never run locally"
+        },
+        {
+          "design_id": "fx_c14_code",
+          "why": "no result and no queue row"
+        }
+      ]
+    },
+    "also_included": {
+      "cnf_kdg_gemma_rs": {
+        "role": "corrected re-run",
+        "tier": "EXPLORATORY",
+        "why": "the leak-corrected re-serve of cnf_kdg_gemma, the confirmed knowing-doing cell; tier EXPLORATORY because the re-serve reset the tier it had inherited by copy. Included because it supersedes a pre-registered cell (see SUPERSESSIONS.json)"
+      },
+      "vph_independent": {
+        "role": "template",
+        "tier": "EXPLORATORY",
+        "why": "a TEMPLATE, not evidence: controls row power_preview builds its fixtures from this design and the sd of its last result. EXPLORATORY; not one of the pre-registered designs"
+      }
+    }
+  },
+  "results": {
+    "rows": 70,
+    "cells": 214,
+    "cells_with_values": 178,
+    "raw_text_stripped": {
+      "keys": [
+        "samples",
+        "samples_monitor"
+      ],
+      "cells": 17,
+      "where": [
+        {
+          "design_id": "conf_scale_gemma_small",
+          "band": "safety",
+          "metric": "correctness_discrimination",
+          "key": "samples"
+        },
+        {
+          "design_id": "conf_scale_qwen25c_small",
+          "band": "safety",
+          "metric": "correctness_discrimination",
+          "key": "samples"
+        },
+        {
+          "design_id": "conf_scale_qwen25c_large",
+          "band": "safety",
+          "metric": "correctness_discrimination",
+          "key": "samples"
+        },
+        {
+          "design_id": "conf_family_qwen35",
+          "band": "safety",
+          "metric": "correctness_discrimination",
+          "key": "samples"
+        },
+        {
+          "design_id": "conf_family_gemma12",
+          "band": "safety",
+          "metric": "correctness_discrimination",
+          "key": "samples"
+        },
+        {
+          "design_id": "conf_dissoc_gemma_labelled",
+          "band": "safety",
+          "metric": "correctness_discrimination",
+          "key": "samples"
+        },
+        {
+          "design_id": "conf_dissoc_gemma_plain",
+          "band": "safety",
+          "metric": "correctness_discrimination",
+          "key": "samples"
+        },
+        {
+          "design_id": "conf_dissoc_qwen35_labelled",
+          "band": "safety",
+          "metric": "correctness_discrimination",
+          "key": "samples"
+        },
+        {
+          "design_id": "conf_dissoc_qwen35_plain",
+          "band": "safety",
+          "metric": "correctness_discrimination",
+          "key": "samples"
+        },
+        {
+          "design_id": "conf_recon_gemma",
+          "band": "safety",
+          "metric": "correctness_discrimination",
+          "key": "samples"
+        },
+        {
+          "design_id": "conf_recon_qwen35",
+          "band": "safety",
+          "metric": "correctness_discrimination",
+          "key": "samples"
+        },
+        {
+          "design_id": "conf_obey_qwen35",
+          "band": "safety",
+          "metric": "correctness_discrimination",
+          "key": "samples"
+        },
+        {
+          "design_id": "conf_scale_gemma_large",
+          "band": "safety",
+          "metric": "correctness_discrimination",
+          "key": "samples"
+        },
+        {
+          "design_id": "conf_obey_gemma",
+          "band": "safety",
+          "metric": "correctness_discrimination",
+          "key": "samples"
+        },
+        {
+          "design_id": "cnf_invcross_qwen35",
+          "band": "safety",
+          "metric": "correctness_discrimination",
+          "key": "samples"
+        },
+        {
+          "design_id": "ps25_p03_q35_provenance_recovery_c2",
+          "band": "safety",
+          "metric": "correctness_discrimination",
+          "key": "samples"
+        },
+        {
+          "design_id": "cnf_kdg_gemma_rs",
+          "band": "safety",
+          "metric": "oversight_discrimination",
+          "key": "samples_monitor"
+        }
+      ]
+    }
+  },
+  "retractions": {
+    "records": 28,
+    "whole_design": 4,
+    "metric_scoped": 24,
+    "in_this_subset": [
+      "dec_q35"
+    ]
+  },
+  "predictions": {
+    "prediction_rows": 4,
+    "void_rows": 0
+  },
+  "engine_ledger_at_export": {
+    "designs": 1920,
+    "result_rows": 1729,
+    "undecodable_lines": {
+      "META_DESIGNS.jsonl": 0,
+      "META_RESULTS.jsonl": 0
+    }
+  },
+  "not_shipped": [
+    "FINDINGS.json",
+    "META_QUEUE.jsonl",
+    "RESULT_*.json",
+    "CONTROLS_LOG.jsonl",
+    "GEN_CACHE/",
+    "the lab's working notes (STATE.md, DEAD_ENDS.md)",
+    "every other .md file in the lab",
+    "tests/",
+    "raw model text (samples, samples_monitor)"
+  ],
+  "files": {
+    ".gitattributes": {
+      "sha256": "c264e66b3acc2ee560b7e6e5dba3ce776109b638f0bfda0fb67523aa752cb15a",
+      "bytes": 102,
+      "source": "generated by export_instruments.py"
+    },
+    ".gitignore": {
+      "sha256": "e1002d626610acb56f29131c5fc8a61f31723300222ca8e77767a7be7198cef8",
+      "bytes": 197,
+      "source": "generated by export_instruments.py"
+    },
+    "CITATION.cff": {
+      "sha256": "1b14035db8b288e226faf9894c5a1b2b4d0963af74b484c1146478dcb4f870b5",
+      "bytes": 1727,
+      "source": "generated by export_instruments.py"
+    },
+    "LICENSE": {
+      "sha256": "ac5a01c4b5adf4ce24ee9bfaae018e198a2bb70ae730323efcaefcccf5f8aaa2",
+      "bytes": 1069,
+      "source": "generated by export_instruments.py"
+    },
+    "README.md": {
+      "sha256": "3719b58376a370b1bbcef6022c9d39fcc6c2be07485a568a885d47768b05d6fb",
+      "bytes": 20324,
+      "source": "generated by export_instruments.py"
+    },
+    "lab/META_DESIGNS.jsonl": {
+      "sha256": "1a52f981d12bef7357932603e3516a78d113f1fd529d585eb109fde780aba496",
+      "bytes": 338710,
+      "source": "projects/verifier_frontier/META_DESIGNS.jsonl",
+      "rows": 75,
+      "selection": "last row per id; tier in ['CONFIRMATORY_LOCAL', 'EXTERNAL_READY'], plus ['cnf_kdg_gemma_rs', 'vph_independent']"
+    },
+    "lab/META_RESULTS.jsonl": {
+      "sha256": "dffa0a57605c8cd3d851e12f1e5075c37da5381626709ba58c24b9139f47b984",
+      "bytes": 934672,
+      "source": "projects/verifier_frontier/META_RESULTS.jsonl",
+      "rows": 70,
+      "selection": "latest row (by ts) per included design; keys ['samples', 'samples_monitor'] removed from every cell"
+    },
+    "lab/PREDICTIONS.jsonl": {
+      "sha256": "02f21cd8e30752e633bdcb4209f6982eb480f735bada5499caab8b329065261e",
+      "bytes": 2225,
+      "source": "projects/verifier_frontier/PREDICTIONS.jsonl",
+      "rows": 4,
+      "selection": "prediction rows whose design_id, and void rows whose void id, is an included design"
+    },
+    "lab/RETRACTIONS.jsonl": {
+      "sha256": "2ce7170af4022177f3486461c5b7d8ea66e8125a6e43e22b086d3901853052e7",
+      "bytes": 22511,
+      "source": "projects/verifier_frontier/RETRACTIONS.jsonl",
+      "rows": 28,
+      "selection": "the complete ledger",
+      "modified": "11 rows: the `by` field names the lab session and its date"
+    },
+    "lab/SUPERSESSIONS.json": {
+      "sha256": "d70dc115a397e1b8d52697ae3c9dbb86b786b32afa269dcbd976824a5cb05da6",
+      "bytes": 25464,
+      "source": "generated from META_DESIGNS.jsonl, META_RESULTS.jsonl, META_QUEUE.jsonl, RETRACTIONS.jsonl and leak_exposure.DEFECTS",
+      "rows": 16
+    },
+    "lab/band_agreement.py": {
+      "sha256": "7898d5a2f45511269c2a0bbf9b7314356fa12c4d40fa1376ca7ca6a7a3013ea2",
+      "bytes": 8604,
+      "source": "projects/verifier_frontier/band_agreement.py",
+      "matches_engine_commit": true,
+      "in_engine_commit": true,
+      "engine_working_tree_had_uncommitted_changes": false,
+      "source_sha256": "7898d5a2f45511269c2a0bbf9b7314356fa12c4d40fa1376ca7ca6a7a3013ea2"
+    },
+    "lab/causal_faithfulness.py": {
+      "sha256": "d5c15b2174b1ed0dc9bf4b1c40c476040c17df7b12d5a4332fe9ad972e93815f",
+      "bytes": 15688,
+      "source": "projects/verifier_frontier/causal_faithfulness.py",
+      "matches_engine_commit": true,
+      "in_engine_commit": true,
+      "engine_working_tree_had_uncommitted_changes": false,
+      "source_sha256": "d5c15b2174b1ed0dc9bf4b1c40c476040c17df7b12d5a4332fe9ad972e93815f"
+    },
+    "lab/controls.py": {
+      "sha256": "a7beedf5fb7750bb63fb2c9b0dae3b6edec76ee5ca9b4308eac54dbf04a84204",
+      "bytes": 27827,
+      "source": "projects/verifier_frontier/controls.py",
+      "matches_engine_commit": true,
+      "in_engine_commit": true,
+      "engine_working_tree_had_uncommitted_changes": false,
+      "source_sha256": "a7beedf5fb7750bb63fb2c9b0dae3b6edec76ee5ca9b4308eac54dbf04a84204"
+    },
+    "lab/corpus_audit.py": {
+      "sha256": "cdf586e7ab64f78213dcf15f608b821dd725b18a91a6201ba2ca5d8fe4cc0c4b",
+      "bytes": 13321,
+      "source": "projects/verifier_frontier/corpus_audit.py",
+      "matches_engine_commit": true,
+      "in_engine_commit": true,
+      "engine_working_tree_had_uncommitted_changes": false,
+      "source_sha256": "cdf586e7ab64f78213dcf15f608b821dd725b18a91a6201ba2ca5d8fe4cc0c4b"
+    },
+    "lab/debate_truth.py": {
+      "sha256": "aa4f3da753128cacd4981b2eaa6885d44f40e4493a3e654aa1ef79461370fa6d",
+      "bytes": 22833,
+      "source": "projects/verifier_frontier/debate_truth.py",
+      "matches_engine_commit": true,
+      "in_engine_commit": true,
+      "engine_working_tree_had_uncommitted_changes": false,
+      "source_sha256": "aa4f3da753128cacd4981b2eaa6885d44f40e4493a3e654aa1ef79461370fa6d"
+    },
+    "lab/defence_score.py": {
+      "sha256": "d245c488c3bf3a8201bf2678bbfcf65337e7bf73792fd38c4bf1344c98348e46",
+      "bytes": 5629,
+      "source": "projects/verifier_frontier/defence_score.py",
+      "matches_engine_commit": true,
+      "in_engine_commit": true,
+      "engine_working_tree_had_uncommitted_changes": false,
+      "source_sha256": "d245c488c3bf3a8201bf2678bbfcf65337e7bf73792fd38c4bf1344c98348e46"
+    },
+    "lab/derived_check.py": {
+      "sha256": "36e47ed0b9ba80b8e41a5a2daa36db26c8f11bb713c94d0757f445aedcdb29b6",
+      "bytes": 5621,
+      "source": "projects/verifier_frontier/derived_check.py",
+      "matches_engine_commit": true,
+      "in_engine_commit": true,
+      "engine_working_tree_had_uncommitted_changes": false,
+      "source_sha256": "36e47ed0b9ba80b8e41a5a2daa36db26c8f11bb713c94d0757f445aedcdb29b6"
+    },
+    "lab/fidelity_tasks.py": {
+      "sha256": "d6811c74f07cb7a5ce0ed6076672daf3e6cb9db31629ab01471a78813fb83ac5",
+      "bytes": 11331,
+      "source": "projects/verifier_frontier/fidelity_tasks.py",
+      "matches_engine_commit": true,
+      "in_engine_commit": true,
+      "engine_working_tree_had_uncommitted_changes": false,
+      "source_sha256": "d6811c74f07cb7a5ce0ed6076672daf3e6cb9db31629ab01471a78813fb83ac5"
+    },
+    "lab/findings_lint.py": {
+      "sha256": "e6f8c4fbfce98d93074d1138bb37b5d90f9232ada344110020535f8edcb124c7",
+      "bytes": 10419,
+      "source": "projects/verifier_frontier/findings_lint.py",
+      "matches_engine_commit": true,
+      "in_engine_commit": true,
+      "engine_working_tree_had_uncommitted_changes": false,
+      "source_sha256": "e6f8c4fbfce98d93074d1138bb37b5d90f9232ada344110020535f8edcb124c7"
+    },
+    "lab/fingerprint.py": {
+      "sha256": "e6d5c9a78b624be67b5b1f0feb040aa7a015bdc22e8704c622e94b5390198488",
+      "bytes": 1925,
+      "source": "projects/verifier_frontier/fingerprint.py",
+      "matches_engine_commit": true,
+      "in_engine_commit": true,
+      "engine_working_tree_had_uncommitted_changes": true,
+      "source_sha256": "e6d5c9a78b624be67b5b1f0feb040aa7a015bdc22e8704c622e94b5390198488"
+    },
+    "lab/floored_audit.py": {
+      "sha256": "7a7abc346a4ecd2642539db79f20cc7fdb5e7ee2d8aebf498656d5b39a0f587c",
+      "bytes": 5406,
+      "source": "projects/verifier_frontier/floored_audit.py",
+      "matches_engine_commit": true,
+      "in_engine_commit": true,
+      "engine_working_tree_had_uncommitted_changes": false,
+      "source_sha256": "7a7abc346a4ecd2642539db79f20cc7fdb5e7ee2d8aebf498656d5b39a0f587c"
+    },
+    "lab/instrument_check.py": {
+      "sha256": "f272aa9417ae2a5120d74e77c9cff2f5f7f20eef2a839e5f45ac5e66f59e3106",
+      "bytes": 19153,
+      "source": "projects/verifier_frontier/instrument_check.py",
+      "matches_engine_commit": true,
+      "in_engine_commit": true,
+      "engine_working_tree_had_uncommitted_changes": false,
+      "source_sha256": "f272aa9417ae2a5120d74e77c9cff2f5f7f20eef2a839e5f45ac5e66f59e3106"
+    },
+    "lab/lattice_canary.py": {
+      "sha256": "1131dfa85bb6afb818b7c5d46294095d14f09d3bc4b32ef70eaea4e4c7473b40",
+      "bytes": 25652,
+      "source": "projects/verifier_frontier/lattice_canary.py",
+      "matches_engine_commit": true,
+      "in_engine_commit": true,
+      "engine_working_tree_had_uncommitted_changes": false,
+      "source_sha256": "1131dfa85bb6afb818b7c5d46294095d14f09d3bc4b32ef70eaea4e4c7473b40"
+    },
+    "lab/leak_exposure.py": {
+      "sha256": "d04888132c6c85019f16a457698ebfd7ac8072ecda53df0da463ad1341ae2b5b",
+      "bytes": 18232,
+      "source": "projects/verifier_frontier/leak_exposure.py",
+      "matches_engine_commit": true,
+      "in_engine_commit": true,
+      "engine_working_tree_had_uncommitted_changes": false,
+      "source_sha256": "d04888132c6c85019f16a457698ebfd7ac8072ecda53df0da463ad1341ae2b5b"
+    },
+    "lab/meta_lab.py": {
+      "sha256": "c60c60bd08b640e41bcd1d0a094b31d0b255b5afbb90541aeae59ea47ef28aff",
+      "bytes": 409333,
+      "source": "projects/verifier_frontier/meta_lab.py",
+      "matches_engine_commit": true,
+      "in_engine_commit": true,
+      "engine_working_tree_had_uncommitted_changes": true,
+      "source_sha256": "0b5ef6f91a8d107d0e087515a7b0cf6c4db125de3be602c2349ff8419307dc48"
+    },
+    "lab/parse_capture_audit.py": {
+      "sha256": "f4a16e7836e88a60762d1918616b759211169f83148d169285964e08889852c6",
+      "bytes": 6951,
+      "source": "projects/verifier_frontier/parse_capture_audit.py",
+      "matches_engine_commit": true,
+      "in_engine_commit": true,
+      "engine_working_tree_had_uncommitted_changes": false,
+      "source_sha256": "f4a16e7836e88a60762d1918616b759211169f83148d169285964e08889852c6"
+    },
+    "lab/procedure_applicability.py": {
+      "sha256": "c2ae709469fc151dc109681a295b8c65a90a1dc28f52758e2732db888a8e1672",
+      "bytes": 13845,
+      "source": "projects/verifier_frontier/procedure_applicability.py",
+      "matches_engine_commit": true,
+      "in_engine_commit": true,
+      "engine_working_tree_had_uncommitted_changes": false,
+      "source_sha256": "c2ae709469fc151dc109681a295b8c65a90a1dc28f52758e2732db888a8e1672"
+    },
+    "lab/quoted_numbers.py": {
+      "sha256": "4a082ad539f23e39e28e69c66f0771cfe22e7a865da0dbff7085419e7bb0d1df",
+      "bytes": 10051,
+      "source": "projects/verifier_frontier/quoted_numbers.py",
+      "matches_engine_commit": true,
+      "in_engine_commit": true,
+      "engine_working_tree_had_uncommitted_changes": false,
+      "source_sha256": "4a082ad539f23e39e28e69c66f0771cfe22e7a865da0dbff7085419e7bb0d1df"
+    },
+    "lab/retractions.py": {
+      "sha256": "73c2053b582dccd082d09f87073c96b7db29843214844c990d1713c3a8e475b9",
+      "bytes": 5907,
+      "source": "projects/verifier_frontier/retractions.py",
+      "matches_engine_commit": true,
+      "in_engine_commit": true,
+      "engine_working_tree_had_uncommitted_changes": false,
+      "source_sha256": "73c2053b582dccd082d09f87073c96b7db29843214844c990d1713c3a8e475b9"
+    },
+    "lab/rigor.py": {
+      "sha256": "594bc73aa4184f4d490fca42a559b9de7a41cd3490996daf668729fb541e48de",
+      "bytes": 12953,
+      "source": "projects/verifier_frontier/rigor.py",
+      "matches_engine_commit": true,
+      "in_engine_commit": true,
+      "engine_working_tree_had_uncommitted_changes": false,
+      "source_sha256": "594bc73aa4184f4d490fca42a559b9de7a41cd3490996daf668729fb541e48de"
+    },
+    "lab/runner_reads_audit.py": {
+      "sha256": "4cf0a95be292cec777a6a012be4b4ee81dfa53c2fba9a4535e9dc59e0b28085d",
+      "bytes": 14606,
+      "source": "projects/verifier_frontier/runner_reads_audit.py",
+      "matches_engine_commit": true,
+      "in_engine_commit": true,
+      "engine_working_tree_had_uncommitted_changes": false,
+      "source_sha256": "4cf0a95be292cec777a6a012be4b4ee81dfa53c2fba9a4535e9dc59e0b28085d"
+    },
+    "lab/sibling_agreement.py": {
+      "sha256": "c658acad3c8680fdc9c7861365d5f21474e7c1a4d5660ef09680ffc205c52ee2",
+      "bytes": 9235,
+      "source": "projects/verifier_frontier/sibling_agreement.py",
+      "matches_engine_commit": true,
+      "in_engine_commit": true,
+      "engine_working_tree_had_uncommitted_changes": false,
+      "source_sha256": "c658acad3c8680fdc9c7861365d5f21474e7c1a4d5660ef09680ffc205c52ee2"
+    },
+    "lab/soup_triplets.py": {
+      "sha256": "47c3ff321284e5e5d00a17c3a6eef842d89ad7c8cd4f155777afbde750216444",
+      "bytes": 22115,
+      "source": "projects/verifier_frontier/soup_triplets.py",
+      "matches_engine_commit": true,
+      "in_engine_commit": true,
+      "engine_working_tree_had_uncommitted_changes": false,
+      "source_sha256": "47c3ff321284e5e5d00a17c3a6eef842d89ad7c8cd4f155777afbde750216444"
+    },
+    "lab/spec_decay.py": {
+      "sha256": "d3ed079aa07c5aa7db00afe3dda264ec2bc05bc9599a6afcc74b792d155c97a3",
+      "bytes": 14463,
+      "source": "projects/verifier_frontier/spec_decay.py",
+      "matches_engine_commit": true,
+      "in_engine_commit": true,
+      "engine_working_tree_had_uncommitted_changes": false,
+      "source_sha256": "d3ed079aa07c5aa7db00afe3dda264ec2bc05bc9599a6afcc74b792d155c97a3"
+    },
+    "lab/substrate_label_audit.py": {
+      "sha256": "909468c907d4a81516d1b98dc065f0c16abc5c50fb7d7228c94715611ef30b7f",
+      "bytes": 4644,
+      "source": "projects/verifier_frontier/substrate_label_audit.py",
+      "matches_engine_commit": true,
+      "in_engine_commit": true,
+      "engine_working_tree_had_uncommitted_changes": false,
+      "source_sha256": "909468c907d4a81516d1b98dc065f0c16abc5c50fb7d7228c94715611ef30b7f"
+    },
+    "lab/trust.py": {
+      "sha256": "071da6262c89bcf3f0ad67886e7dc4003e4c00dbb2cd4d2cad0698c644dfd865",
+      "bytes": 5659,
+      "source": "projects/verifier_frontier/trust.py",
+      "matches_engine_commit": true,
+      "in_engine_commit": true,
+      "engine_working_tree_had_uncommitted_changes": false,
+      "source_sha256": "071da6262c89bcf3f0ad67886e7dc4003e4c00dbb2cd4d2cad0698c644dfd865"
+    },
+    "lab/unanswered_audit.py": {
+      "sha256": "0156f727a39455341be579adc631b66556e1328c1c947710eb12a227c11ccbca",
+      "bytes": 12377,
+      "source": "projects/verifier_frontier/unanswered_audit.py",
+      "matches_engine_commit": true,
+      "in_engine_commit": true,
+      "engine_working_tree_had_uncommitted_changes": false,
+      "source_sha256": "0156f727a39455341be579adc631b66556e1328c1c947710eb12a227c11ccbca"
+    },
+    "lab/verdict_lint.py": {
+      "sha256": "98701d7ab678bda2e07c8971e5cb51b19ff67af3388f8cf5b2ae7a29dd1f7807",
+      "bytes": 9544,
+      "source": "projects/verifier_frontier/verdict_lint.py",
+      "matches_engine_commit": true,
+      "in_engine_commit": true,
+      "engine_working_tree_had_uncommitted_changes": false,
+      "source_sha256": "1c5b85444510ed2416ad5da88f6901179846d45601ade24b0b77d3cc63a9563d"
+    },
+    "reproduce.py": {
+      "sha256": "d375c9a13f6689f0ae48d3d575a141f6458d142126aa892d31bbfd52c6899d88",
+      "bytes": 19810,
+      "source": "generated by export_instruments.py"
+    },
+    "requirements.txt": {
+      "sha256": "d148dc97158d31ff8b82e85753bfb4d0e86002c9271d08263cae6a139a536627",
+      "bytes": 12,
+      "source": "generated by export_instruments.py"
+    }
+  }
+}

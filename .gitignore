@@ -1,0 +1,8 @@
+# Written when the instruments run. Never part of the export.
+__pycache__/
+*.py[cod]
+lab/.reproduce_tmp/
+lab/LATTICE_CANARY.json
+lab/CONTROLS.json
+lab/CONTROLS_LOG.jsonl
+lab/INSTRUMENT_CHECKS.json
