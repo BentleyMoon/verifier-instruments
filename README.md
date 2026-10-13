@@ -88,7 +88,7 @@ What it proves: each science instrument responds to a known bad input and ignore
 
 ### 4. Ledgers (information only, never fails the run)
 
-`reproduce.py` runs `retractions.py` on the subset and prints which of the seven commands in the programme's assessor brief (a page for grant reviewers that lists the commands behind its figures) run here. `pytest` needs the engine's test suite. `python controls.py` runs all 18 registry rows; the 5 operational rows ERROR because their modules are not shipped, so it exits 1. `corpus_audit.py`, `findings_lint.py`, `floored_audit.py` and `verdict_lint.py` grade the whole corpus or the findings prose, so on this subset they print different numbers, or stop for lack of `FINDINGS.json`. `retractions.py` runs, and its rate is over this subset's result rows.
+`reproduce.py` runs `retractions.py` on the subset and prints which of the seven commands behind the programme's published figures run here. `pytest` needs the engine's test suite. `python controls.py` runs all 18 registry rows; the 5 operational rows ERROR because their modules are not shipped, so it exits 1. `corpus_audit.py`, `findings_lint.py`, `floored_audit.py` and `verdict_lint.py` grade the whole corpus or the findings prose, so on this subset they print different numbers, or stop for lack of `FINDINGS.json`. `retractions.py` runs, and its rate is over this subset's result rows.
 
 ## Corrections
 
